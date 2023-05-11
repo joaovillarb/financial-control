@@ -29,6 +29,9 @@ public class Account extends BaseEntity {
     @OneToMany(mappedBy = "account")
     private List<Budget> budgets;
 
+    @OneToMany(mappedBy = "account")
+    private List<Goal> goals;
+
     public Account(AccountDto accountDto) {
         this.login = accountDto.login();
         this.password = accountDto.password();
@@ -36,7 +39,7 @@ public class Account extends BaseEntity {
         this.person = new Person(accountDto.person(), this);
     }
 
-    public Account update(AccountDto accountDto) {
+    public Account patch(AccountDto accountDto) {
         if (Objects.nonNull(accountDto.salary())) {
             this.salary = accountDto.salary();
         }

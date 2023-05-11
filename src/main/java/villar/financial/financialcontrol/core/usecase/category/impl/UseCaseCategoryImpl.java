@@ -22,10 +22,8 @@ public class UseCaseCategoryImpl implements UseCaseCategory {
 
     @Transactional
     public String update(CategoryDto categoryDto) {
-        final Category categoryFounded = this.categoryGateway.find(categoryDto.name())
-                .orElseThrow(() -> new RuntimeException())
+        final Category category = this.categoryGateway.find(categoryDto.name())
                 .update(categoryDto);
-        final Category category = this.categoryGateway.save(categoryFounded);
-        return category.getId();
+        return this.categoryGateway.save(category).getId();
     }
 }
