@@ -6,7 +6,6 @@ import villar.financial.financialcontrol.core.gateway.CategoryGateway;
 import villar.financial.financialcontrol.core.gateway.GoalGateway;
 import villar.financial.financialcontrol.core.usecase.goal.UseCaseGoal;
 import villar.financial.financialcontrol.dataprovider.database.entity.Account;
-import villar.financial.financialcontrol.dataprovider.database.entity.Budget;
 import villar.financial.financialcontrol.dataprovider.database.entity.Category;
 import villar.financial.financialcontrol.dataprovider.database.entity.Goal;
 import villar.financial.financialcontrol.entrypoint.dto.GoalDto;
@@ -24,13 +23,10 @@ public class UseCaseGoalImpl implements UseCaseGoal {
         this.categoryGateway = categoryGateway;
     }
 
-
     @Transactional
     public String update(GoalDto dto) {
-        Account account = accountGateway.find(dto.account().login())
-                .orElseThrow(() -> new RuntimeException());
-        Category category = categoryGateway.find(dto.category().name())
-                .orElseThrow(() -> new RuntimeException());
+        final Account account = this.accountGateway.find(dto.account().login());
+        final Category category = this.categoryGateway.find(dto.category().name());
         final Goal entity = new Goal(dto, account, category);
         return this.goalGateway.save(entity).getId();
     }

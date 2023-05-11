@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class Goal extends BaseEntity {
 
-    private BigDecimal value;
+    private BigDecimal mustSpent;
 
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)
@@ -26,8 +26,8 @@ public class Goal extends BaseEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
 
-    public Goal(GoalDto dto, Account account, Category category) {
-        this.value = dto.value();
+    public Goal(GoalDto goalDto, Account account, Category category) {
+        this.mustSpent = goalDto.mustSpent();
         this.account = account;
         this.category = category;
     }

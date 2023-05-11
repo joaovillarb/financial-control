@@ -5,6 +5,6 @@ import java.math.BigDecimal;
 public record ResumeBudgetDto(String name,
                               BigDecimal spent,
                               BigDecimal mustSpent,
-                              BigDecimal used,
-                              BigDecimal total) {
+                              BigDecimal percentUsed,
+                              BigDecimal percentTotal) {
 }

@@ -25,10 +25,8 @@ public class UseCaseBudgetImpl implements UseCaseBudget {
 
     @Transactional
     public String add(BudgetDto budgetDto) {
-        Account account = accountGateway.find(budgetDto.account().login())
-                .orElseThrow(() -> new RuntimeException());
-        Category category = categoryGateway.find(budgetDto.category().name())
-                .orElseThrow(() -> new RuntimeException());
+        final Account account = accountGateway.find(budgetDto.account().login());
+        final Category category = categoryGateway.find(budgetDto.category().name());
         final Budget budget = new Budget(budgetDto, account, category);
         return this.budgetGateway.save(budget).getId();
     }

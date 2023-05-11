@@ -1,6 +1,9 @@
 package villar.financial.financialcontrol.entrypoint.api;
 
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import villar.financial.financialcontrol.core.usecase.budget.UseCaseBudget;
 import villar.financial.financialcontrol.entrypoint.dto.BudgetDto;
 
@@ -12,11 +15,6 @@ class BudgetApi {
 
     BudgetApi(UseCaseBudget useCaseBudget) {
         this.useCaseBudget = useCaseBudget;
-    }
-
-    @GetMapping("resume")
-    public String resume() {
-        return "Hello World!";
     }
 
     @PostMapping

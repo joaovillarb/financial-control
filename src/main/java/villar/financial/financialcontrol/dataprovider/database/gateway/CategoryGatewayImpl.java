@@ -1,10 +1,9 @@
 package villar.financial.financialcontrol.dataprovider.database.gateway;
 
+import villar.financial.financialcontrol.core.exceptions.CategoryNotFound;
 import villar.financial.financialcontrol.core.gateway.CategoryGateway;
 import villar.financial.financialcontrol.dataprovider.database.entity.Category;
 import villar.financial.financialcontrol.dataprovider.database.repository.CategoryRepository;
-
-import java.util.Optional;
 
 public class CategoryGatewayImpl implements CategoryGateway {
 
@@ -14,8 +13,9 @@ public class CategoryGatewayImpl implements CategoryGateway {
         this.repository = repository;
     }
 
-    public Optional<Category> find(final String name) {
-        return this.repository.findByName(name);
+    public Category find(final String name) {
+        return this.repository.findByName(name)
+                .orElseThrow(() -> new CategoryNotFound(name));
     }
 
     public Category save(Category entity) {
