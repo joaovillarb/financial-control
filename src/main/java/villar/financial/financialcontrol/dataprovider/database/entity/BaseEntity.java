@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 @Setter
@@ -18,16 +19,16 @@ public abstract class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID, generator = "uuid")
-    private UUID uuid;
+    protected UUID uuid;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    protected LocalDateTime createdAt;
 
     @Column(name = "modified_at")
-    private LocalDateTime updatedAt;
+    protected LocalDateTime updatedAt;
 
     @Version
-    private Integer version;
+    protected Integer version;
 
     @PrePersist
     public void prePersist() {
@@ -40,6 +41,6 @@ public abstract class BaseEntity {
     }
 
     public String getId() {
-        return uuid.toString();
+        return Objects.isNull(uuid) ? null : uuid.toString();
     }
 }

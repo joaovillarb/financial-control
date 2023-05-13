@@ -11,4 +11,8 @@ public record CategoryDto(
                 category.getDescription()
         );
     }
+
+    public CategoryDto(String name) {
+        this(name, null);
+    }
 }

@@ -8,11 +8,11 @@ import villar.financial.financialcontrol.entrypoint.dto.Resume;
 
 @RestController
 @RequestMapping("account")
-public class AccountApi {
+class AccountApi {
 
     private final UseCaseAccount useCaseAccount;
 
-    public AccountApi(UseCaseAccount useCaseAccount) {
+    AccountApi(UseCaseAccount useCaseAccount) {
         this.useCaseAccount = useCaseAccount;
     }
 
@@ -33,7 +33,6 @@ public class AccountApi {
     }
 
     @PatchMapping
-    @ResponseStatus(HttpStatus.OK)
     public String patch(@RequestBody AccountDto accountDto) {
         return this.useCaseAccount.patch(accountDto);
     }

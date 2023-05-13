@@ -3,6 +3,7 @@ package villar.financial.financialcontrol.entrypoint.dto;
 import villar.financial.financialcontrol.dataprovider.database.entity.Account;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 
 public record AccountDto(
@@ -25,5 +26,9 @@ public record AccountDto(
                         .map(GoalDto::new)
                         .toList()
         );
+    }
+
+    public AccountDto(String login) {
+        this(login, null, null, null, Collections.emptyList(), Collections.emptyList());
     }
 }
