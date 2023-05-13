@@ -7,12 +7,11 @@ import villar.financial.financialcontrol.entrypoint.dto.CategoryDto;
 
 @RestController
 @RequestMapping("category")
-public class CategoryApi {
+class CategoryApi {
 
     private final UseCaseCategory useCaseCategory;
 
-
-    public CategoryApi(UseCaseCategory useCaseCategory) {
+    CategoryApi(UseCaseCategory useCaseCategory) {
         this.useCaseCategory = useCaseCategory;
     }
 
