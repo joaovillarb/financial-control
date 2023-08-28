@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class Goal extends BaseEntity {
 
-    private BigDecimal mustSpent;
+    private BigDecimal mustSpentPercentage;
 
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)
@@ -27,7 +27,7 @@ public class Goal extends BaseEntity {
     private Category category;
 
     public Goal(GoalDto goalDto, Account account, Category category) {
-        this.mustSpent = goalDto.mustSpent();
+        this.mustSpentPercentage = goalDto.mustSpentPercentage();
         this.account = account;
         this.category = category;
     }

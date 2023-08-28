@@ -7,10 +7,9 @@ public interface UseCaseAccount {
 
     String save(final AccountDto accountDto);
 
-    String patch(final AccountDto accountDto);
+    AccountDto patch(final AccountDto accountDto);
 
     AccountDto getByLogin(String login);
 
     Resume getDetailAccountByLogin(String login);
-
 }

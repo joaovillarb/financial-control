@@ -37,15 +37,16 @@ public class UseCaseAccountImpl implements UseCaseAccount {
         final List<Goal> goalList = account.getGoals();
 
         final BigDecimal totalSpent = sumList(budgetList, Budget::getSpent, null);
-        final BigDecimal totalMustSpent = sumList(goalList, Goal::getMustSpent, null);
+        final BigDecimal totalMustSpent = account.getSalary();
 
-        final BigDecimal percentTotalResume = getPercentBetweenTwoValues(totalSpent, totalMustSpent);
+        final BigDecimal percentTotalResume = getPercentBetweenTwoValues(totalMustSpent, totalSpent);
 
         List<ResumeBudgetDto> list = goalList.stream().map(goal -> {
             final Category category = goal.getCategory();
             final BigDecimal spent = sumList(budgetList, Budget::getSpent, budget -> budget.getCategory().equals(category));
-            final BigDecimal mustSpent = goal.getMustSpent();
+            final BigDecimal mustSpentPercentage = goal.getMustSpentPercentage();
             final BigDecimal salary = account.getSalary();
+            final BigDecimal mustSpent = salary.multiply(mustSpentPercentage);
             final BigDecimal percentUsed = getPercentBetweenTwoValues(mustSpent, spent);
             final BigDecimal percentTotal = getPercentBetweenTwoValues(salary, spent);
             return new ResumeBudgetDto(
@@ -57,6 +58,7 @@ public class UseCaseAccountImpl implements UseCaseAccount {
             );
         }).toList();
         return new Resume(
+                account.getUuid(),
                 list,
                 totalSpent,
                 totalMustSpent,
@@ -85,9 +87,10 @@ public class UseCaseAccountImpl implements UseCaseAccount {
     }
 
     @Transactional
-    public String patch(final AccountDto accountDto) {
+    public AccountDto patch(final AccountDto accountDto) {
         final Account account = this.accountGateway.find(accountDto.login())
                 .patch(accountDto);
-        return this.accountGateway.save(account).getId();
+        final Account savedAccount = this.accountGateway.save(account);
+        return new AccountDto(savedAccount);
     }
 }

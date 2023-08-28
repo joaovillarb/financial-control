@@ -5,12 +5,12 @@ import villar.financial.financialcontrol.dataprovider.database.entity.Goal;
 import java.math.BigDecimal;
 
 public record GoalDto(
-        BigDecimal mustSpent,
+        BigDecimal mustSpentPercentage,
         AccountDto account,
         CategoryDto category) {
     public GoalDto(Goal goal) {
         this(
-                goal.getMustSpent(),
+                goal.getMustSpentPercentage(),
                 null,
                 new CategoryDto(goal.getCategory())
         );

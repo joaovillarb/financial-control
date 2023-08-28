@@ -3,7 +3,7 @@ package villar.financial.financialcontrol.provider;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
-import villar.financial.financialcontrol.entrypoint.dto.AccountDto;
+import villar.financial.financialcontrol.entrypoint.dto.BudgetAccountDto;
 import villar.financial.financialcontrol.entrypoint.dto.BudgetDto;
 import villar.financial.financialcontrol.entrypoint.dto.CategoryDto;
 
@@ -22,7 +22,7 @@ public class BudgetDtoProvider implements ArgumentsProvider {
                         LocalDateTime.now(),
                         BigDecimal.valueOf(500L),
                         "Compras aleatórias",
-                        new AccountDto(EMAIL_TEST),
+                        new BudgetAccountDto(EMAIL_TEST),
                         new CategoryDto(CATEGORY_NAME)
                 )
         ).map(Arguments::of);

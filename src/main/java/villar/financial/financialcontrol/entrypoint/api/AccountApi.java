@@ -33,7 +33,7 @@ class AccountApi {
     }
 
     @PatchMapping
-    public String patch(@RequestBody AccountDto accountDto) {
+    public AccountDto patch(@RequestBody AccountDto accountDto) {
         return this.useCaseAccount.patch(accountDto);
     }
 }

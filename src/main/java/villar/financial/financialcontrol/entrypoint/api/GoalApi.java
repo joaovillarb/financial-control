@@ -1,11 +1,10 @@
 package villar.financial.financialcontrol.entrypoint.api;
 
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import villar.financial.financialcontrol.core.usecase.goal.UseCaseGoal;
 import villar.financial.financialcontrol.entrypoint.dto.GoalDto;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("goal")
@@ -18,8 +17,13 @@ class GoalApi {
     }
 
     @PutMapping
-    public String update(@RequestBody GoalDto dto) {
+    public GoalDto update(@RequestBody GoalDto dto) {
         return useCaseGoal.update(dto);
+    }
+
+    @GetMapping
+    public List<GoalDto> getAllGoals(@RequestParam String login) {
+        return useCaseGoal.getAll(login);
     }
 
 }
