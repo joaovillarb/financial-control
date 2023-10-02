@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import villar.financial.financialcontrol.infrastructure.utils.StringUtil;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -18,7 +18,7 @@ public class CustomResponse {
 
     @JsonIgnore
     private Throwable exception;
-    private OffsetDateTime timestamp;
+    private LocalDateTime timestamp;
     private Integer status;
     private String error;
     private String message;
@@ -27,14 +27,14 @@ public class CustomResponse {
                           String message,
                           int status) {
         this.exception = throwable;
-        this.timestamp = OffsetDateTime.now();
+        this.timestamp = LocalDateTime.now();
         this.status = status;
         setMessage(message, throwable);
     }
 
     public CustomResponse(Throwable throwable, int status) {
         this.exception = throwable;
-        this.timestamp = OffsetDateTime.now();
+        this.timestamp = LocalDateTime.now();
         this.status = status;
         setMessage(null, throwable);
     }

@@ -14,6 +14,7 @@ import villar.financial.financialcontrol.entrypoint.dto.ResumeBudgetDto;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -28,42 +29,22 @@ public class UseCaseAccountImpl implements UseCaseAccount {
 
     public AccountDto getByLogin(String login) {
         final Account account = this.accountGateway.find(login);
-        return new AccountDto(account);
+        return createAccountDto(account);
     }
 
-    public Resume getDetailAccountByLogin(String login) {
-        final Account account = this.accountGateway.find(login);
-        final List<Budget> budgetList = account.getBudgets();
-        final List<Goal> goalList = account.getGoals();
+    @Transactional
+    public AccountDto save(final AccountDto accountDto) {
+        final Account account = new Account(accountDto);
+        Account savedAccount = this.accountGateway.save(account);
+        return createAccountDto(savedAccount);
+    }
 
-        final BigDecimal totalSpent = sumList(budgetList, Budget::getSpent, null);
-        final BigDecimal totalMustSpent = account.getSalary();
-
-        final BigDecimal percentTotalResume = getPercentBetweenTwoValues(totalMustSpent, totalSpent);
-
-        List<ResumeBudgetDto> list = goalList.stream().map(goal -> {
-            final Category category = goal.getCategory();
-            final BigDecimal spent = sumList(budgetList, Budget::getSpent, budget -> budget.getCategory().equals(category));
-            final BigDecimal mustSpentPercentage = goal.getMustSpentPercentage();
-            final BigDecimal salary = account.getSalary();
-            final BigDecimal mustSpent = salary.multiply(mustSpentPercentage);
-            final BigDecimal percentUsed = getPercentBetweenTwoValues(mustSpent, spent);
-            final BigDecimal percentTotal = getPercentBetweenTwoValues(salary, spent);
-            return new ResumeBudgetDto(
-                    category.getName(),
-                    spent,
-                    mustSpent,
-                    percentUsed,
-                    percentTotal
-            );
-        }).toList();
-        return new Resume(
-                account.getUuid(),
-                list,
-                totalSpent,
-                totalMustSpent,
-                percentTotalResume
-        );
+    @Transactional
+    public AccountDto patch(final AccountDto accountDto) {
+        final Account account = this.accountGateway.find(accountDto.login())
+                .patch(accountDto);
+        final Account savedAccount = this.accountGateway.save(account);
+        return createAccountDto(savedAccount);
     }
 
     private <T> BigDecimal sumList(List<T> list, Function<T, BigDecimal> function,
@@ -80,17 +61,50 @@ public class UseCaseAccountImpl implements UseCaseAccount {
                 : BigDecimal.ZERO;
     }
 
-    @Transactional
-    public String save(final AccountDto accountDto) {
-        final Account account = new Account(accountDto);
-        return this.accountGateway.save(account).getId();
+    private Resume createResume(Account account) {
+        final List<Budget> budgetList = account.getBudgets();
+        final List<Goal> goalList = account.getGoals();
+
+        if (Objects.isNull(budgetList)) {
+            return new Resume(
+                    List.of(),
+                    BigDecimal.ZERO,
+                    BigDecimal.ZERO,
+                    BigDecimal.ZERO
+            );
+        }
+
+        final BigDecimal totalSpent = sumList(budgetList, Budget::getSpent, null);
+        final BigDecimal totalMustSpent = account.getWallets().get(0).getAmount();
+
+        final BigDecimal percentTotalResume = getPercentBetweenTwoValues(totalMustSpent, totalSpent);
+
+        List<ResumeBudgetDto> list = goalList.stream().map(goal -> {
+            final Category category = goal.getCategory();
+            final BigDecimal spent = sumList(budgetList, Budget::getSpent, budget -> budget.getCategory().equals(category));
+            final BigDecimal mustSpentPercentage = goal.getMustSpentPercentage();
+            final BigDecimal salary = account.getWallets().get(0).getAmount();
+            final BigDecimal mustSpent = salary.multiply(mustSpentPercentage);
+            final BigDecimal percentUsed = getPercentBetweenTwoValues(mustSpent, spent);
+            final BigDecimal percentTotal = getPercentBetweenTwoValues(salary, spent);
+            return new ResumeBudgetDto(
+                    category.getName(),
+                    spent,
+                    mustSpent,
+                    percentUsed,
+                    percentTotal
+            );
+        }).toList();
+        return new Resume(
+                list,
+                totalSpent,
+                totalMustSpent,
+                percentTotalResume
+        );
     }
 
-    @Transactional
-    public AccountDto patch(final AccountDto accountDto) {
-        final Account account = this.accountGateway.find(accountDto.login())
-                .patch(accountDto);
-        final Account savedAccount = this.accountGateway.save(account);
-        return new AccountDto(savedAccount);
+    private AccountDto createAccountDto(Account account) {
+//        final Resume resume = createResume(account);
+        return new AccountDto(account);
     }
 }

@@ -8,5 +8,5 @@ public interface UseCaseGoal {
 
     GoalDto update(GoalDto dto);
 
-    List<GoalDto> getAll(String login);
+    List<GoalDto> getAll();
 }

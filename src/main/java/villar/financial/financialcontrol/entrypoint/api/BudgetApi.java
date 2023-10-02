@@ -31,11 +31,13 @@ class BudgetApi {
     public Page<BudgetDto> pageBy(@PageableDefault Pageable pageable) {
         return this.useCaseBudget.pageBy(pageable);
     }
+
     @GetMapping("page/login")
     public Page<BudgetDto> pageByLogin(@RequestParam("accountLogin") String accountLogin,
                                        @PageableDefault Pageable pageable) {
         return this.useCaseBudget.pageByLogin(accountLogin, pageable);
     }
+
     @GetMapping("page/login/month")
     public Page<BudgetDto> pageByLogin(@RequestParam("accountLogin") String accountLogin,
                                        @RequestParam(name = "yearMonth") @DateTimeFormat(pattern = "yyyy-MM") YearMonth yearMonth,

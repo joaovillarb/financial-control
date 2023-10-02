@@ -22,8 +22,8 @@ class GoalApi {
     }
 
     @GetMapping
-    public List<GoalDto> getAllGoals(@RequestParam String login) {
-        return useCaseGoal.getAll(login);
+    public List<GoalDto> getAllGoals() {
+        return useCaseGoal.getAll();
     }
 
 }

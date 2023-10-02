@@ -32,7 +32,7 @@ public abstract class BaseTest {
         Account account = new Account(
                 EMAIL_TEST,
                 PASSWORD_TEST,
-                BigDecimal.TEN,
+                null,
                 null,
                 null,
                 null

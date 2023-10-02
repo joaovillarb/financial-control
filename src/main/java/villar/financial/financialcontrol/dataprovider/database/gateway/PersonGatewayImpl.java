@@ -1,6 +1,6 @@
 package villar.financial.financialcontrol.dataprovider.database.gateway;
 
-import villar.financial.financialcontrol.core.usecase.person.PersonGateway;
+import villar.financial.financialcontrol.core.gateway.PersonGateway;
 import villar.financial.financialcontrol.dataprovider.database.entity.Person;
 import villar.financial.financialcontrol.dataprovider.database.repository.PersonRepository;
 
